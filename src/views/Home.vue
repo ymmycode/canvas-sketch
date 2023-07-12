@@ -2,8 +2,8 @@
   <div>
     <vue-drawing-canvas 
       ref="VueCanvasDrawing" 
-      :width="600"
-      :height="400"
+      :width="1920"
+      :height="1080"
       :styles="{
         border: 'solid 1px #000',
       }"
