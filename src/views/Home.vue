@@ -9,39 +9,37 @@
       }"
     /> -->
 
-  <vue-drawing-canvas
-    ref="VueCanvasDrawing"
-    class="shadow-lg"
-    v-model:image="image"
-    :width="canvasProp.width"
-    :height="canvasProp.height"
-    :stroke-type="strokeType"
-    :line-cap="lineCap"
-    :line-join="lineJoin"
-    :fill-shape="fillShape"
-    :eraser="eraser"
-    :lineWidth="line"
-    :color="color"
-    :background-color="backgroundColor"
-    :background-image="backgroundImage"
-    :watermark="watermark"
-    :initial-image="initialImage"
-    saveAs="png"
-    :styles="{
-      position: 'relative',
-      zIndex: '0',
-    }"
-    :lock="disabled"
-    @mousemove="getCoordinate($event)"
-    :additional-images="additionalImages"
-  />
+  <div class="fixed">
+    <vue-drawing-canvas
+      ref="VueCanvasDrawing"
+      class="shadow-lg"
+      v-model:image="image"
+      :width="canvasProp.width"
+      :height="canvasProp.height"
+      :stroke-type="strokeType"
+      :line-cap="lineCap"
+      :line-join="lineJoin"
+      :fill-shape="fillShape"
+      :eraser="eraser"
+      :lineWidth="line"
+      :color="color"
+      :background-color="backgroundColor"
+      :background-image="backgroundImage"
+      :watermark="watermark"
+      :initial-image="initialImage"
+      saveAs="png"
+      :lock="disabled"
+      @mousemove="getCoordinate($event)"
+      :additional-images="additionalImages"
+    />
+  </div>
 
-  <!-- <div class="fixed w-full h-full z-10">
-    <img class="w-full h-full" src="../assets/body_trans.png" alt="">
-  </div> -->
+  <div class="fixed w-full h-full z-10 pointer-events-none unselectable">
+    <img class="w-full h-full pointer-events-none unselectable" src="../assets/body_trans.png" alt="">
+  </div>
 
   <div :class="minimize ? 'overflow-hidden' : ''" class="text-xs fixed bottom-10 left-1/2 -translate-x-1/2 border shadow-lg z-40 bg-white rounded-xl">
-    <div @click="minimize = !minimize" class="button-container bg-slate-200 cursor-pointer w-full border py-[.5vw] px-[2vw] flex justify-between items-center">
+    <div @click="minimize = !minimize" class="unselectable button-container rounded-t-xl bg-slate-200 cursor-pointer w-full border py-[.5vw] px-[2vw] flex justify-between items-center">
       <div class="text-[1vw] font-bold">
         Control
       </div>
@@ -50,7 +48,7 @@
       </div>
     </div>
 
-    <div class="w-full transition-all duration-300 " :class="minimize ? 'max-h-0 opacity-0' : 'max-h-screen opacity-100'">
+    <div class="w-full transition-all duration-300 unselectable" :class="minimize ? 'max-h-0 opacity-0' : 'max-h-screen opacity-100'">
       <!-- Lock & Unlock canvas -->
       <div class="button-container">
         <button type="button" @click.prevent="disabled = !disabled" class="button-menu-small">
@@ -166,10 +164,10 @@
         <!-- Erase & Draw -->
         <button type="button" @click.prevent="eraser = !eraser" class="button-menu">
           <div class="flex h-full">
-            <div :class="eraser? '':'bg-slate-200'" class="w-full h-full hover:bg-slate-200 transition-colors duration-200 p-[1vw] flex items-center">
+            <div :class="eraser? '':'bg-slate-200'" class="w-full h-full hover:bg-slate-200 transition-colors duration-200 p-[.5vw] flex items-center">
               <span>
                 <svg 
-                  class="w-[5vw] h-[5vw]" 
+                  class="w-[2vw] h-[2vw]" 
                   xmlns="http://www.w3.org/2000/svg" 
                   viewBox="0 0 24 24"
                 >
@@ -181,10 +179,10 @@
                 Draw
               </span>
             </div>
-            <div :class="eraser? 'bg-slate-200':''" class="w-full h-full hover:bg-slate-200 transition-colors duration-200 p-[1vw] flex items-center">
+            <div :class="eraser? 'bg-slate-200':''" class="w-full h-full hover:bg-slate-200 transition-colors duration-200 p-[.5vw] flex items-center">
               <span>
                   <svg
-                    class="w-[5vw] h-[5vw]" 
+                    class="w-[2vw] h-[2vw]" 
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                   >
@@ -199,24 +197,26 @@
         </button>
 
         <!-- Brush Size -->
-        <div class="w-auto flex items-center gap-[1vw] button-menu p-[2vw]">
+        <div class="w-auto flex items-center gap-[1vw] button-menu p-[.5vw]">
           <VueSlider
             ref="slider"
             id="lineSize"
             v-model="line"
             v-bind="options"
           ></VueSlider>
-          <input type="number" min="1" for="lineSize" v-model="line" class="border w-[3vw]">
+          <input type="number" min="1" for="lineSize" v-model="line" class="border w-[1.5vw] p-[.1vw]">
         </div>
 
         <!-- Color Picker -->
-        <div class="flex flex-col p-[2vw] border">
-          <pick-colors theme="dark" id="colorPicker" v-model:value="color" show-alpha/>
-          <label for="colorPicker">Pick&nbsp;Color</label>
+        <div class="p-[.5vw] border">
+          <div class="flex items-center flex-col">
+            <pick-colors theme="dark" id="colorPicker" v-model:value="color"/>
+            <div>Pick&nbsp;Color</div>
+          </div>
         </div>
 
         <!-- stoke & fill shape -->
-        <div id="drawType" class="button-menu flex items-center p-[1vw]">
+        <div id="drawType" class="button-menu flex items-center p-[.5vw]">
           <div>
             <select v-model="strokeType" class="border mb-[1vw]">
               <option value="dash">Dash</option>
@@ -226,12 +226,12 @@
               <option value="triangle">Triangle</option>
               <option value="half_triangle">Half Triangle</option>
             </select>
-            <label for="drawType">Draw & Shapes</label>
+            <div>Draw & Shapes</div>
           </div>
         </div>
 
         <!-- fill & stroke -->
-        <button type="button" @click.prevent="fillShape = !fillShape" class="button-menu p-[2vw]">
+        <button type="button" @click.prevent="fillShape = !fillShape" class="button-menu p-[.5vw]">
           <div v-if="fillShape" class="flex items-center gap-[.5vw]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -265,7 +265,7 @@
       <div class="w-full flex justify-end">
         <div class="button-container">
           <!-- Save & Send Image -->
-          <button class="button-menu hover:bg-slate-200 flex gap-[.5vw] py-[1vw] px-[2vw]">
+          <button class="button-menu hover:bg-slate-200 flex gap-[.5vw] py-[.5vw] px-[1vw]">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none"><path d="M24 0v24H0V0h24ZM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018Zm.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022Zm-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01l-.184-.092Z"/><path fill="currentColor" d="M8 3v3.5A1.5 1.5 0 0 0 9.5 8h4A1.5 1.5 0 0 0 15 6.5V3h.586A2 2 0 0 1 17 3.586L19.414 6A2 2 0 0 1 20 7.414V19a2 2 0 0 1-2 2h-2v-7a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v7H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3Zm6 11v7H9v-7h5ZM13 3v3h-3V3h3Z"/></g></svg>
             Save & Send Image
           </button>
@@ -366,7 +366,7 @@ const strokeType = ref("dash")
 const lineCap = ref("round")
 const lineJoin = ref("round")
 const backgroundColor = ref("#FFFFFF")
-const backgroundImage = ref(ImageFill)
+const backgroundImage = ref(null)
 const watermark = ref(null)
 const additionalImages = ref([])
 const VueCanvasDrawing = ref()
@@ -375,14 +375,14 @@ const minimize = ref(false)
 const line = ref(5)
 const options = ref({
   dotSize: 14,
-  width: '5vw',
+  width: '6vw',
   height: 4,
   contained: false,
   direction: 'ltr',
 	data: null,
   dataLabel: 'label',
   dataValue: 'value',
-  min: 0,
+  min: 1,
   max: 50,
   interval: 1,
   disabled: false,
@@ -420,25 +420,35 @@ const canvasProp = ref({
   height: window.innerHeight
 })
 
-const setImage = async (event) => {
+const setImage = (event) => {
   let URL = window.URL;
-  backgroundImage.value = URL.createObjectURL(ImageFill);
-  await VueCanvasDrawing.value.redraw();
+  fetch(ImageFill)
+  .then(response => response.blob())
+  .then(blob => {
+    const url = URL.createObjectURL(blob);
+    backgroundImage.value = url;
+    VueCanvasDrawing.value.redraw();
+  });
 }
 
-const setWatermarkImage = async (event) => {
+const setWatermarkImage = (event) => {
   let URL = window.URL;
-  watermark.value = {
-    type: "Image",
-    source: URL.createObjectURL(ImageTrans),
-    x: 0,
-    y: 0,
-    imageStyle: {
-      width: canvasProp.value.width,
-      height: canvasProp.value.height,
-    },
-  };
-  await VueCanvasDrawing.value.redraw();
+  fetch(ImageFill)
+  .then(response => response.blob())
+  .then(blob => {
+    const url = URL.createObjectURL(blob);
+      watermark.value = {
+      type: "Image",
+      source: url,
+      x: 0,
+      y: 0,
+      imageStyle: {
+        width: canvasProp.value.width,
+        height: canvasProp.value.height,
+      },
+    };
+    VueCanvasDrawing.value.redraw();
+  });
 }
 
 const getCoordinate = (event) => {
@@ -463,6 +473,9 @@ const removeSavedStrokes = () => {
 }
 
 onMounted(() => {
+  setImage()
+  setWatermarkImage()
+  
   if ("vue-drawing-canvas" in window.localStorage) {
     initialImage.value = JSON.parse(
       window.localStorage.getItem("vue-drawing-canvas")
@@ -478,6 +491,8 @@ onMounted(() => {
     canvasProp.value.height = window.innerHeight
     VueCanvasDrawing.value.redraw()
   })
+
+  
 })
 
 // watch(

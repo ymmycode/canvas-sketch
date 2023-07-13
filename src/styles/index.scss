@@ -19,9 +19,25 @@
 }
 
 .button-menu-small {
-  @apply border hover:bg-slate-200 transition-colors duration-200 py-[.1vw] px-[2vw] flex gap-[.5vw] items-center;
+  @apply border hover:bg-slate-200 transition-colors duration-200 py-[.1vw] px-[1vw] flex gap-[.5vw] items-center;
 }
 
-.color-item {
-  @apply w-[4vw] h-[4vw] #{!important};
+.color-picker {
+  .color-item {
+    @apply w-[2vw] h-[2vw] #{!important};
+  }
+
+  .colors {
+    .color-item {
+      @apply w-[1vw] h-[1vw] #{!important};
+    }
+  }
+}
+
+.unselectable {
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
