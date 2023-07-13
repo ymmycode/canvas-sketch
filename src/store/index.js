@@ -17,8 +17,7 @@ export const useMainStore = defineStore('main', {
     },
 
     captureCanvasStream(payload) {
-      console.log(payload)
-      // this.canvasStream = payload
+      this.canvasStream = payload
     }
   },
 })
