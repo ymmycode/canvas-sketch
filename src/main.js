@@ -1,7 +1,6 @@
 import { createApp, inject } from 'vue'
 import './styles/index.scss'
 import router from './router'
-import store from './store'
 import {createPinia} from 'pinia'
 import { VueFire, VueFireAuth } from 'vuefire'
 import { firebaseApp } from './firebase'

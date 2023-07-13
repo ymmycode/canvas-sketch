@@ -326,6 +326,10 @@
     </div> -->
   </div>
 
+  <div class="absolute top-0 left-0 z-50 max-w-2xl">
+    <video id="vid" controls autoplay></video>
+  </div>
+
 </template>
 
 <script setup>
@@ -336,11 +340,29 @@ import 'vue-slider-component/theme/default.css'
 
 import PickColors from 'vue-pick-colors'
 
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watch, nextTick } from 'vue';
+import { useMainStore } from '../store'
+import { useRouter } from "vue-router";
 
 // image
 import ImageFill from '../assets/body_fill.png'
 import ImageTrans from '../assets/body_trans.png'
+
+const store = useMainStore()
+const route = useRouter();
+const openDrawBoard = () => {
+  // store.captureCanvasStream(document.getElementById('VueDrawingCanvas').captureStream(60))
+  let routeData = route.resolve({ name: "canvas-stream" });
+  let newWindow = window.open(
+    routeData.href,
+    "foobar",
+    "toolbar=no,scrollbars=no,resizable=yes,top=0,left=1920,width=4000,height=4000,fullscreen=yes"
+  );
+};
+const start = () => {
+  openDrawBoard();
+  route.push({ name: "drawboard" });
+};
 
 const initialImage = ref([
   {
@@ -433,18 +455,21 @@ const setImage = (event) => {
 
 const setWatermarkImage = (event) => {
   let URL = window.URL;
-  fetch(ImageFill)
+  fetch(ImageTrans)
   .then(response => response.blob())
   .then(blob => {
     const url = URL.createObjectURL(blob);
-      watermark.value = {
+    watermark.value = {
       type: "Image",
       source: url,
       x: 0,
       y: 0,
       imageStyle: {
-        width: canvasProp.value.width,
-        height: canvasProp.value.height,
+        // width: canvasProp.value.width,
+        // height: canvasProp.value.height,
+
+        width: 1920,
+        height: 1080,
       },
     };
     VueCanvasDrawing.value.redraw();
@@ -473,8 +498,6 @@ const removeSavedStrokes = () => {
 }
 
 onMounted(() => {
-  setImage()
-  setWatermarkImage()
   
   if ("vue-drawing-canvas" in window.localStorage) {
     initialImage.value = JSON.parse(
@@ -491,8 +514,21 @@ onMounted(() => {
     canvasProp.value.height = window.innerHeight
     VueCanvasDrawing.value.redraw()
   })
-
   
+
+  nextTick(() => {
+    // console.log(store.count)
+    setImage()
+    setWatermarkImage()
+
+    let vidEl = document.getElementById('vid')
+    let stream = document.getElementById('VueDrawingCanvas').captureStream(60)
+    vidEl.srcObject = stream
+    // vidEl.play()
+  })
+
+  // start()
+
 })
 
 // watch(

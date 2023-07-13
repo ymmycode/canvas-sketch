@@ -1,11 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import DrawBoard from '../views/DrawBoard.vue'
+import MainMenu from '../views/MainMenu.vue'
+import CanvasStream from '../views/CanvasStream.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Home
+    name: 'main-menu',
+    component: MainMenu
+  },
+  {
+    path: '/drawboard',
+    name: 'drawboard',
+    component: DrawBoard
+  },
+  {
+    path: '/canvas-stream',
+    name: 'canvas-stream',
+    component: CanvasStream
   },
 ]
 

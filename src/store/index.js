@@ -1,16 +1,24 @@
 import {defineStore} from 'pinia'
 import { ref, computed } from 'vue'
 
-const useMainStore = defineStore('main', () => {
-  const userData = ref(null)
-  
-  //getter example
-  // const doubleCount = computed(() => count.value * 2)
+export const useMainStore = defineStore('main', {
 
-  // action
-  function increment() {
-    count.value++
-  }
+  state: () => ({ 
+    count: 0, 
+    canvasStream: null,
+  }),
+
+  getters: {
+  },
+
+  actions: {
+    increment() {
+      this.count++
+    },
+
+    captureCanvasStream(payload) {
+      console.log(payload)
+      // this.canvasStream = payload
+    }
+  },
 })
-
-export default useMainStore
