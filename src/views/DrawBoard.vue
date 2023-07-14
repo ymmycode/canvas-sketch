@@ -326,8 +326,11 @@
     </div> -->
   </div>
 
-  <div class="absolute top-0 left-0 z-50 max-w-2xl">
-    <video id="vid" controls autoplay></video>
+  <div class="fixed top-0 left-0 z-50 max-w-2xl">
+    <video id="vid" controls autoplay class="w-full h-full absolute top-0 left-0"></video>
+    <figure class="relative left-0 top-0 z-20 w-full h-full">
+      <img src="../assets/body_trans.png" alt="">
+    </figure>
   </div>
 
 </template>
